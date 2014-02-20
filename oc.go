@@ -9,7 +9,6 @@ import (
 func main() {
 	usage := "Usage: oc add <time> <time>"
 	args, _ := docopt.Parse(usage, nil, true, "", false)
-	fmt.Println(args)
 
     times := args["<time>"].([]string)
 
