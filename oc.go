@@ -7,17 +7,24 @@ import (
 )
 
 func main() {
-	usage := "Usage: oc [diff <time> <time>]"
+	usage := "usage: oc [--zulu] [diff <time> <time>]"
 	args, _ := docopt.Parse(usage, nil, true, "", false)
 
+	formatString := ""
+	if args["--zulu"].(bool) {
+		formatString = time.RFC3339
+	} else {
+		formatString = "15:04"
+	}
+
 	if args["diff"].(bool) {
-		diff(args["<time>"].([]string))
+		Diff(args["<time>"].([]string), formatString)
 	}
 }
 
-func diff(times []string) {
-	time1, err := time.Parse("15:04", times[0])
-	time2, err2 := time.Parse("15:04", times[1])
+func Diff(times []string, formatString string) {
+	time1, err := time.Parse(formatString, times[0])
+	time2, err2 := time.Parse(formatString, times[1])
 
 	if err == nil && err2 == nil {
 		fmt.Println(TimeAbs(time1.Sub(time2)))
